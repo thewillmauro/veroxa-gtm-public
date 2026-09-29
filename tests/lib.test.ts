@@ -35,7 +35,7 @@ describe('config', () => {
   })
 
   it('requireKey fails loudly for an unset optional key', () => {
-    expect(() => requireKey(parseConfig(VALID_ENV), 'HUBSPOT_PRIVATE_APP_TOKEN')).toThrow(/HUBSPOT_PRIVATE_APP_TOKEN/)
+    expect(() => requireKey(parseConfig(VALID_ENV), 'HUBSPOT_SERVICE_KEY')).toThrow(/HUBSPOT_SERVICE_KEY/)
   })
 })
 

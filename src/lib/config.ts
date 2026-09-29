@@ -16,7 +16,7 @@ const ConfigSchema = z.object({
   // Optional: only if the Clay webhook source has an auth token enabled.
   CLAY_WEBHOOK_AUTH_TOKEN: z.string().min(1).optional(),
   CLAY_CALLBACK_SECRET: z.string().min(16).optional(),
-  HUBSPOT_PRIVATE_APP_TOKEN: z.string().min(1).optional(),
+  HUBSPOT_SERVICE_KEY: z.string().min(1).optional(),
   LOG_LEVEL: z.enum(['debug', 'info', 'warn', 'error']).default('info'),
 })
 

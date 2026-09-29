@@ -55,7 +55,7 @@ flowchart LR
 | Webhooks | Supabase Edge Functions | `clay-callback`, `inbound` |
 | Enrichment | Clay (free tier to start) | Webhook table in, HTTP API column out |
 | AI | Claude API | Research agent + outreach drafts, JSON outputs |
-| CRM | HubSpot Free | Private app token, REST API |
+| CRM | HubSpot Free | Service Key (beta; `Authorization: Bearer`, REST API only, no webhooks) |
 | Scheduling | Supabase cron (pg_cron) or GitHub Actions | Batch runs |
 | Tests | Vitest | Unit + contract tests |
 
@@ -296,7 +296,7 @@ Write a short ADR in `docs/decisions/` for each non-obvious choice.
 
 ## 15. Config / secrets
 
-`.env` (never committed): `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `ANTHROPIC_API_KEY`, `CLAY_WEBHOOK_URL`, `CLAY_CALLBACK_SECRET`, `HUBSPOT_PRIVATE_APP_TOKEN`.
+`.env` (never committed): `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `ANTHROPIC_API_KEY`, `CLAY_WEBHOOK_URL`, `CLAY_CALLBACK_SECRET`, `HUBSPOT_SERVICE_KEY`.
 
 ## 16. Decisions (Will)
 
