@@ -27,7 +27,7 @@ Row 1 will be **Ashford Bell & Carter** (decision-maker John P. Ashford Jr.). Th
 
 | Field | Column name | Row 1 value |
 |---|---|---|
-| `firm_id` | `firm_id` | `07d5cda2-c944-4c10-b4e2-5a38516e3f13` |
+| `firm_id` | `firm_id` | `b64b6f13-085f-481c-bf58-f484045dff8e` |
 | `firm_name` | `firm_name` | `Ashford Bell & Carter` (rows sent before 2026-09-28 23:15 UTC, i.e. Ashford, don't have it) |
 | `domain` | `domain` | `ashfordbell-example.com` |
 | `dm_name` | `dm_name` | `John P. Ashford Jr.` |
@@ -88,7 +88,7 @@ The waterfall verifies each provider's result with Findymail and only writes ver
 **Check on row 1:**
 
 ```json
-{"firm_id":"07d5cda2-c944-4c10-b4e2-5a38516e3f13","people":[{"full_name":"John P. Ashford Jr.","title":"Founder and Senior Partner","email":"jashford@ashfordbell-example.com","email_source":"clay_waterfall","email_verified":true,"linkedin_url":null,"decision_maker_source":"research_agent"}]}
+{"firm_id":"b64b6f13-085f-481c-bf58-f484045dff8e","people":[{"full_name":"John P. Ashford Jr.","title":"Founder and Senior Partner","email":"jashford@ashfordbell-example.com","email_source":"clay_waterfall","email_verified":true,"linkedin_url":null,"decision_maker_source":"research_agent"}]}
 ```
 
 - **Only** `firm_id` and `people`: no `company`, no `custody`. The callback accepts that and keeps the firm's stored headcount and custody unchanged (tested 2026-09-28).

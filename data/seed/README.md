@@ -1,10 +1,13 @@
 # Seed CSVs
 
-Hand-built firm lists (ADR 0006). Copy `firms.template.csv`, fill it in, and import:
+Hand-built firm lists (ADR 0006). Two files ship here:
+
+- `firms.template.csv`: headers only. Copy it and fill in your own firms.
+- `firms.sample.csv`: five fictional firms, to try the importer.
 
 ```sh
-npm run seed -- data/seed/firms.csv --dry-run   # validate, show the plan, write nothing
-npm run seed -- data/seed/firms.csv             # import
+npm run seed -- data/seed/firms.sample.csv --dry-run   # validate, show the plan, write nothing
+npm run seed -- data/seed/firms.sample.csv             # import
 ```
 
 ## Columns

@@ -3,7 +3,7 @@ import { eligibility, findFirm, type FirmResearch } from '../src/research/delive
 import { buildDmPayload, main, planDmSend, waterfallName } from '../src/clay/send-dm.js'
 
 const firm = (over: Partial<FirmResearch> = {}): FirmResearch => ({
-  firmId: '07d5cda2-c944-4c10-b4e2-5a38516e3f13',
+  firmId: 'b64b6f13-085f-481c-bf58-f484045dff8e',
   firmName: 'Ashford Bell & Carter',
   domain: 'ashfordbell-example.com',
   researchId: '11111111-1111-4111-8111-111111111111',
@@ -36,11 +36,11 @@ describe('eligibility', () => {
 })
 
 describe('findFirm', () => {
-  const all = [firm(), firm({ firmId: '29b8b6de-3068-47da-9931-38aaf397293c', firmName: 'Jennifer D. Whitfield LLC', domain: 'jdwhitfieldlaw-example.com' })]
+  const all = [firm(), firm({ firmId: '131d22d1-5e12-4591-b84a-48df58d74d2b', firmName: 'Jennifer D. Whitfield LLC', domain: 'jdwhitfieldlaw-example.com' })]
 
   it('matches by domain, id, or a unique name fragment', () => {
     expect(findFirm(all, 'jdwhitfieldlaw-example.com')).toMatchObject({ firmName: 'Jennifer D. Whitfield LLC' })
-    expect(findFirm(all, '07d5cda2-c944-4c10-b4e2-5a38516e3f13')).toMatchObject({ domain: 'ashfordbell-example.com' })
+    expect(findFirm(all, 'b64b6f13-085f-481c-bf58-f484045dff8e')).toMatchObject({ domain: 'ashfordbell-example.com' })
     expect(findFirm(all, 'ashford')).toMatchObject({ domain: 'ashfordbell-example.com' })
   })
 
@@ -53,7 +53,7 @@ describe('findFirm', () => {
 describe('clay:send-dm', () => {
   it('builds exactly the six-field payload', () => {
     expect(buildDmPayload(firm())).toEqual({
-      firm_id: '07d5cda2-c944-4c10-b4e2-5a38516e3f13',
+      firm_id: 'b64b6f13-085f-481c-bf58-f484045dff8e',
       firm_name: 'Ashford Bell & Carter',
       domain: 'ashfordbell-example.com',
       dm_name: 'John P. Ashford Jr.',
