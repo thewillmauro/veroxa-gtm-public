@@ -1,0 +1,6 @@
+{
+  "firm_id": "not-a-uuid",
+  "company": { "headcount": "about six" },
+  "custody": { "answer": "maybe" },
+  "people": { "email": "x@y.com" }
+}

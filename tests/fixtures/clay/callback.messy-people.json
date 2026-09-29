@@ -1,0 +1,13 @@
+{
+  "firm_id": "0b6f3c1e-8d2a-4c5b-9e7f-1a2b3c4d5e6f",
+  "company": { "headcount": null },
+  "custody": { "answer": "unclear", "evidence_url": "" },
+  "people": [
+    { "full_name": "No Email", "title": "Partner", "email": "" },
+    { "full_name": "Bad Email", "title": "Associate", "email": "not-an-email" },
+    { "full_name": "Jane Rivera", "title": "Managing Partner", "email": "JANE@smithrivera.com", "email_verified": "yes" },
+    { "full_name": "Jane Again", "title": "Partner", "email": "jane@smithrivera.com" },
+    { "full_name": "Pat Associate", "title": "Associate Attorney", "email": "pat@smithrivera.com", "email_verified": 0 }
+  ],
+  "unexpected_clay_column": "ignored"
+}

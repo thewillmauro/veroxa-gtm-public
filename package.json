@@ -1,0 +1,41 @@
+{
+  "name": "veroxa-gtm",
+  "version": "1.0.0",
+  "description": "Veroxa go-to-market pipeline: attorney outbound + inbound routing",
+  "scripts": {
+    "typecheck": "tsc --noEmit && npm run -s check:functions",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "db:push": "supabase db push",
+    "db:types": "supabase gen types typescript --linked --schema public > src/lib/database.types.ts",
+    "test:integration": "node --env-file=.env ./node_modules/vitest/vitest.mjs run tests/integration",
+    "seed": "tsx --env-file-if-exists=.env src/seed/cli.ts",
+    "clay:send": "tsx --env-file-if-exists=.env src/clay/cli.ts",
+    "check:functions": "cd supabase/functions/clay-callback && deno check index.ts",
+    "research:pilot": "tsx --env-file-if-exists=.env src/research/pilot.ts",
+    "research:store": "tsx --env-file-if-exists=.env src/research/store.ts",
+    "review": "tsx --env-file-if-exists=.env src/research/review.ts",
+    "clay:send-dm": "tsx --env-file-if-exists=.env src/clay/send-dm.ts"
+  },
+  "author": "",
+  "type": "module",
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.5.8",
+    "@types/node": "^26.6.3",
+    "deno": "^2.9.6",
+    "supabase": "^2.118.0",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.2"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.129.0",
+    "@supabase/supabase-js": "^2.117.2",
+    "csv-parse": "^7.0.3",
+    "zod": "^4.6.5"
+  },
+  "private": true,
+  "engines": {
+    "node": ">=22.9"
+  }
+}

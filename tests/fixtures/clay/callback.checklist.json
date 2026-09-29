@@ -1,0 +1,6 @@
+{
+  "firm_id": "0b6f3c1e-8d2a-4c5b-9e7f-1a2b3c4d5e6f",
+  "company": { "headcount": "11-50" },
+  "custody": { "answer": "yes", "evidence_url": "https://smithrivera.com/family-law/custody" },
+  "people": "[{\"full_name\":\"Jane Rivera\",\"title\":\"Managing Partner\",\"email\":\"jane@smithrivera.com\",\"email_source\":\"clay_waterfall\",\"email_verified\":true,\"linkedin_url\":\"https://www.linkedin.com/in/jane-rivera-example\"}]"
+}

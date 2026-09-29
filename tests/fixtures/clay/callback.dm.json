@@ -1,0 +1,14 @@
+{
+  "firm_id": "0b6f3c1e-8d2a-4c5b-9e7f-1a2b3c4d5e6f",
+  "people": [
+    {
+      "full_name": "Jennifer D. Whitfield",
+      "title": "Attorney",
+      "email": "jwhitfield@example-firm.com",
+      "email_source": "clay_waterfall",
+      "email_verified": true,
+      "linkedin_url": null,
+      "decision_maker_source": "research_agent"
+    }
+  ]
+}
