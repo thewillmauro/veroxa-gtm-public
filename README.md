@@ -13,7 +13,7 @@ A go-to-market pipeline for [Veroxa](SPEC.md#1-goal), a record-keeping product f
 | Wrong contacts sent on to email lookup | | **0** |
 
 - Graded against hand labels. One of the 10 correct answers is "no decision-maker listed on the site", and two firms went through the human review step (`npm run review`) before being sent on.
-- The 9 decision-makers sent to Clay's email lookup all matched the labels. When the lookup returned an address on a different firm's domain, a database guard rejected the whole callback before anything was written (migration `20260928220000_research_email_domain_guard.sql`).
+- The 9 decision-makers sent to Clay's email lookup all matched the labels. For one of them, the lookup returned an address on a different domain than the firm's. It was saved, then caught on review, demoted and suppressed. A database guard added afterward now rejects that case before anything is written (migration `20260928220000_research_email_domain_guard.sql`).
 - 10 firms is a small eval; SPEC §8 targets 25 to 30 labeled firms.
 
 ## Architecture
