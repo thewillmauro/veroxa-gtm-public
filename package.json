@@ -15,7 +15,8 @@
     "research:pilot": "tsx --env-file-if-exists=.env src/research/pilot.ts",
     "research:store": "tsx --env-file-if-exists=.env src/research/store.ts",
     "review": "tsx --env-file-if-exists=.env src/research/review.ts",
-    "clay:send-dm": "tsx --env-file-if-exists=.env src/clay/send-dm.ts"
+    "clay:send-dm": "tsx --env-file-if-exists=.env src/clay/send-dm.ts",
+    "score": "tsx --env-file-if-exists=.env src/scoring/cli.ts"
   },
   "author": "",
   "type": "module",

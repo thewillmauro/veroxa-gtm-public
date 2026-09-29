@@ -56,6 +56,7 @@ Every new table: RLS enabled, no policies, no grants to `anon`/`authenticated` (
 | `npm run research:store -- <runDir>...` | store saved research results; firms -> researched |
 | `npm run review` | approve/reject needs_review decision-makers |
 | `npm run clay:send-dm -- [--send]` | send deliverable decision-makers to GTM Decision Makers (`docs/clay/dm-table-setup.md`); dry run unless `--send` |
+| `npm run score -- [--firm ref] [--send]` | score researched firms (SPEC §9 v1, `src/scoring/`); dry run unless `--send` |
 | `npm run check:functions` | `deno check` the edge functions (runs as part of `typecheck`) |
 
 Scripts run with `npx tsx --env-file-if-exists=.env <file>` (Node 22.9+).
