@@ -287,7 +287,7 @@ Attorney-intent signups captured by the Veroxa product → `inbound` edge functi
 | M3 | Clay round-trip | 10 firms sent → enriched rows land via callback; contract tests pass | Complete 2026-09-28: 10/10 enriched via callback, 184 tests pass. Only 2 firms have a usable decision-maker contact; the other 8 went to the research agent (M4) |
 | M4 | Research agent + evals | Eval set labeled; baseline accuracy recorded | |
 | M5 | Scoring | Breakdown stored; ≥1 unit test per rule | Complete 2026-09-29: v1 scores and breakdowns stored for the 10 researched firms (9 qualified, 1 below 60); 26 scoring tests. Limited scope isn't researched yet, so it scores 0 as unknown |
-| M6 | HubSpot sync | Qualified firms/contacts appear in HubSpot, no dupes on re-run | |
+| M6 | HubSpot sync | Qualified firms/contacts appear in HubSpot, no dupes on re-run | Complete 2026-09-30: 10 researched firms and 6 eligible decision-makers synced with associations and §10 properties, IDs stored back; a re-run finds all 16 and writes nothing. 6 suppressed, held or demoted contacts skipped. Rules in ADR 0010 |
 | M7 | Outreach drafts + review CLI | 10 drafts reviewed | |
 | M8 | Inbound flow | Test signups routed correctly | |
 | M9 | Reporting views + README case study | Loom-ready walkthrough | |

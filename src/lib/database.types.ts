@@ -88,6 +88,7 @@ export type Database = {
           handles_custody: boolean | null
           headcount_est: number | null
           hubspot_company_id: string | null
+          hubspot_deal_id: string | null
           id: string
           last_synced_at: string | null
           name: string
@@ -109,6 +110,7 @@ export type Database = {
           handles_custody?: boolean | null
           headcount_est?: number | null
           hubspot_company_id?: string | null
+          hubspot_deal_id?: string | null
           id?: string
           last_synced_at?: string | null
           name: string
@@ -130,6 +132,7 @@ export type Database = {
           handles_custody?: boolean | null
           headcount_est?: number | null
           hubspot_company_id?: string | null
+          hubspot_deal_id?: string | null
           id?: string
           last_synced_at?: string | null
           name?: string
@@ -210,6 +213,27 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      job_locks: {
+        Row: {
+          acquired_at: string
+          expires_at: string
+          holder: string
+          name: string
+        }
+        Insert: {
+          acquired_at?: string
+          expires_at: string
+          holder: string
+          name: string
+        }
+        Update: {
+          acquired_at?: string
+          expires_at?: string
+          holder?: string
+          name?: string
+        }
+        Relationships: []
       }
       outreach_drafts: {
         Row: {
@@ -352,6 +376,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      acquire_job_lock: {
+        Args: { p_holder: string; p_name: string; p_ttl_seconds: number }
+        Returns: boolean
+      }
       apply_clay_callback: {
         Args: {
           p_custody_evidence_url: string
@@ -372,6 +400,10 @@ export type Database = {
           domain: string
           id: string
         }[]
+      }
+      release_job_lock: {
+        Args: { p_holder: string; p_name: string }
+        Returns: boolean
       }
     }
     Enums: {

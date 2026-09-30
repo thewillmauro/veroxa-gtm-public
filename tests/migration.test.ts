@@ -22,7 +22,7 @@ const SUPABASE_BOOTSTRAP = `
   alter default privileges in schema public grant all on functions to anon, authenticated, service_role;
 `
 
-const TABLES = ['firms', 'contacts', 'research', 'outreach_drafts', 'inbound_signups', 'suppressions', 'pipeline_events']
+const TABLES = ['firms', 'contacts', 'research', 'outreach_drafts', 'inbound_signups', 'suppressions', 'pipeline_events', 'job_locks']
 
 let db: PGlite
 
@@ -384,6 +384,60 @@ describe('migrations', () => {
       const r = await call('guard-k6', [{ ...research('someone@other-domain.com'), decision_maker_source: null, is_decision_maker: false }])
       expect(r.result).toBe('applied')
     })
+  })
+
+  describe('job locks', () => {
+    const A = '00000000-0000-4000-8000-00000000000a'
+    const B = '00000000-0000-4000-8000-00000000000b'
+    const acquire = async (holder: string, ttl = 60) =>
+      (await db.query<{ ok: boolean }>(`select acquire_job_lock('t-lock', '${holder}', ${ttl}) as ok`)).rows[0]!.ok
+    const release = async (holder: string) =>
+      (await db.query<{ ok: boolean }>(`select release_job_lock('t-lock', '${holder}') as ok`)).rows[0]!.ok
+
+    it('lets one holder in at a time, allows renewal, and frees on release', async () => {
+      expect(await acquire(A)).toBe(true)
+      expect(await acquire(B)).toBe(false)
+      expect(await acquire(A)).toBe(true) // renewal by the same holder
+      expect(await release(B)).toBe(false) // can't release someone else's lease
+      expect(await release(A)).toBe(true)
+      expect(await acquire(B)).toBe(true)
+      await release(B)
+    })
+
+    it('lets a new holder take an expired lease', async () => {
+      expect(await acquire(A)).toBe(true)
+      await db.exec(`update job_locks set expires_at = now() - interval '1 second' where name = 't-lock'`)
+      expect(await acquire(B)).toBe(true)
+      await release(B)
+    })
+
+    it('rejects an out-of-range ttl', async () => {
+      expect(await sqlError(`select acquire_job_lock('t-lock', '${A}', 0)`)).toMatch(/ttl must be/)
+      expect(await sqlError(`select acquire_job_lock('t-lock', '${A}', 3601)`)).toMatch(/ttl must be/)
+    })
+
+    it('is executable by service_role only', async () => {
+      for (const fn of ['public.acquire_job_lock(text,uuid,int)', 'public.release_job_lock(text,uuid)']) {
+        const { rows } = await db.query<{ anon: boolean; authed: boolean; svc: boolean }>(
+          `select has_function_privilege('anon', '${fn}', 'execute') as anon,
+                  has_function_privilege('authenticated', '${fn}', 'execute') as authed,
+                  has_function_privilege('service_role', '${fn}', 'execute') as svc`,
+        )
+        expect(rows[0], fn).toEqual({ anon: false, authed: false, svc: true })
+      }
+    })
+  })
+
+  it('keep HubSpot company, deal and contact IDs unique when set, and allow many unsynced rows', async () => {
+    await db.exec(`insert into firms (name, domain, source) values ('Hs A', 'hs-a.com', 'manual_csv'), ('Hs B', 'hs-b.com', 'manual_csv'), ('Hs C', 'hs-c.com', 'manual_csv')`)
+    await db.exec(`update firms set hubspot_company_id = '111', hubspot_deal_id = '900' where domain = 'hs-a.com'`)
+    expect(await sqlError(`update firms set hubspot_company_id = '111' where domain = 'hs-b.com'`)).toMatch(/unique/)
+    expect(await sqlError(`update firms set hubspot_deal_id = '900' where domain = 'hs-b.com'`)).toMatch(/unique/)
+    const { rows } = await db.query(`select 1 from firms where domain in ('hs-b.com', 'hs-c.com') and hubspot_company_id is null`)
+    expect(rows).toHaveLength(2)
+    await db.exec(`insert into contacts (firm_id, email, hubspot_contact_id) select id, 'a@hs-a.com', '5' from firms where domain = 'hs-a.com'`)
+    expect(await sqlError(`insert into contacts (firm_id, email, hubspot_contact_id) select id, 'b@hs-b.com', '5' from firms where domain = 'hs-b.com'`)).toMatch(/unique/)
+    await db.exec(`delete from firms where domain in ('hs-a.com', 'hs-b.com', 'hs-c.com')`)
   })
 
   it('index every foreign key column', async () => {

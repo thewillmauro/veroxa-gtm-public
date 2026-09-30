@@ -13,3 +13,4 @@ One short ADR per non-obvious choice or deviation from [SPEC.md](../../SPEC.md).
 | 0007 | Omitted: covers private Veroxa product internals |
 | [0008](0008-clay-contract.md) | Clay contract: lenient in, strict inside, one transaction per callback |
 | [0009](0009-one-decision-maker-per-firm.md) | M3 enriches one decision-maker per firm, in one Clay table |
+| [0010](0010-hubspot-sync.md) | HubSpot sync: create-only standard fields, never overwrite manual edits, a deal only on reply |

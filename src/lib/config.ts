@@ -17,6 +17,9 @@ const ConfigSchema = z.object({
   CLAY_WEBHOOK_AUTH_TOKEN: z.string().min(1).optional(),
   CLAY_CALLBACK_SECRET: z.string().min(16).optional(),
   HUBSPOT_SERVICE_KEY: z.string().min(1).optional(),
+  // Owner given to records the sync creates. Set by hand from HubSpot's
+  // Settings > Users (the key lacks crm.objects.owners.read to look it up).
+  HUBSPOT_OWNER_ID: z.string().regex(/^\d+$/, 'must be a numeric HubSpot owner id').optional(),
   LOG_LEVEL: z.enum(['debug', 'info', 'warn', 'error']).default('info'),
 })
 

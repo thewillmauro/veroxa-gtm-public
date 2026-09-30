@@ -7,6 +7,10 @@ export interface RetryOptions {
   maxDelayMs?: number
   shouldRetry?: (err: unknown, attempt: number) => boolean
   onRetry?: (err: unknown, attempt: number, delayMs: number) => void
+  // Server-requested wait (e.g. Retry-After). When it returns a number, that
+  // wait replaces the computed backoff, capped at maxRetryAfterMs.
+  retryAfterMs?: (err: unknown) => number | undefined
+  maxRetryAfterMs?: number
   sleep?: (ms: number) => Promise<void>
   random?: () => number
 }
@@ -26,7 +30,11 @@ export async function withRetry<T>(fn: (attempt: number) => Promise<T>, options:
     } catch (err) {
       lastErr = err
       if (attempt === attempts || !shouldRetry(err, attempt)) break
-      const delay = Math.floor(random() * Math.min(max, base * 2 ** (attempt - 1)))
+      const requested = options.retryAfterMs?.(err)
+      const delay =
+        requested !== undefined
+          ? Math.min(Math.max(0, requested), options.maxRetryAfterMs ?? 60_000)
+          : Math.floor(random() * Math.min(max, base * 2 ** (attempt - 1)))
       options.onRetry?.(err, attempt, delay)
       await sleep(delay)
     }

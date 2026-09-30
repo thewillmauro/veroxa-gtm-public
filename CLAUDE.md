@@ -27,6 +27,7 @@ Clay's official MCP (`https://api.clay.com/v3/mcp`) is connected and allowed (SP
 - **No secrets in code, logs, or commits.** Secrets come from `.env` (gitignored; template in `.env.example`) via `getConfig()`. The logger redacts secret-looking keys, but don't rely on it: never log headers or raw config. The service-role key is server-side only.
 - **Emails and domains are lowercase** in the DB (check constraints). Normalize with `src/lib/email.ts`.
 - **Logging:** `createLogger()` from `src/lib/logger.ts`, JSON lines, `child()` for per-firm context.
+- **One HubSpot writer at a time.** Every job that writes to HubSpot runs inside `withJobLock(db, HUBSPOT_SYNC_LOCK, ...)` (`src/lib/job-lock.ts`, `job_locks` table). Company upserts search-then-create, so overlapping runs could duplicate companies.
 - **External calls** go through `withRetry()` with `isRetryableStatus()`; don't retry 4xx other than 408/429.
 - **Scoring and other business rules are pure functions** with a unit test per rule.
 - **Copy rules for anything a human outside the company reads** (outreach drafts, emails): no em dashes, no outcome guarantees, CAN-SPAM footer (physical address + honored unsubscribe). Nothing is auto-sent; Will reviews every draft.
@@ -57,6 +58,10 @@ Every new table: RLS enabled, no policies, no grants to `anon`/`authenticated` (
 | `npm run review` | approve/reject needs_review decision-makers |
 | `npm run clay:send-dm -- [--send]` | send deliverable decision-makers to GTM Decision Makers (`docs/clay/dm-table-setup.md`); dry run unless `--send` |
 | `npm run score -- [--firm ref] [--send]` | score researched firms (SPEC §9 v1, `src/scoring/`); dry run unless `--send` |
+| `npm run hubspot:setup -- [--apply]` | check/create the custom contact + company properties (`src/hubspot/properties.ts`) and the Attorney Pilot deal stages (`src/hubspot/pipeline.ts`); dry run unless `--apply` |
+| `npm run hubspot:sync -- [--send]` | sync researched firms + eligible decision-makers to HubSpot (ADR 0010); dry run unless `--send`; takes the `hubspot-sync` lock |
+| `npm run reply -- --email <addr> \| --signups [--send]` | record a reply: firm -> replied + Attorney Pilot deal (ADR 0010); dry run unless `--send` |
+| `npm run hubspot:sync-suppressions -- [--apply]` | mirror GTM suppressions to existing HubSpot contacts (never creates; skips `existing_customer`); dry run unless `--apply`; takes the `hubspot-sync` job lock |
 | `npm run check:functions` | `deno check` the edge functions (runs as part of `typecheck`) |
 
 Scripts run with `npx tsx --env-file-if-exists=.env <file>` (Node 22.9+).

@@ -1,6 +1,6 @@
 # Veroxa GTM pipeline
 
-A go-to-market pipeline for [Veroxa](SPEC.md#1-goal), a record-keeping product for family court that sells to parents and to family law firms. This repo covers the firm side: it takes a hand-built list of family law firms, enriches them through Clay, uses a Claude research agent to find each firm's family-law decision-maker on the firm's own website, and lands everything in Supabase with an append-only event history. Scoring, HubSpot sync and human-reviewed outreach drafts come next. Nothing is ever auto-sent.
+A go-to-market pipeline for [Veroxa](SPEC.md#1-goal), a record-keeping product for family court that sells to parents and to family law firms. This repo covers the firm side: it takes a hand-built list of family law firms, enriches them through Clay, uses a Claude research agent to find each firm's family-law decision-maker on the firm's own website, and lands everything in Supabase with an append-only event history. Scored firms and their decision-makers then sync to HubSpot without overwriting anything edited there by hand. Human-reviewed outreach drafts come next. Nothing is ever auto-sent.
 
 > **All firm data here is fictional.** Firm names, people, domains and emails in fixtures, tests and docs are invented. The pipeline ran against real, publicly listed firms; those records stay private.
 
@@ -32,7 +32,7 @@ Details: [SPEC.md](SPEC.md) is the plan of record, and [docs/decisions/](docs/de
 
 ## Stack
 
-TypeScript (strict), Node 22 scripts, Deno for Supabase Edge Functions, Supabase Postgres with RLS, Clay, Claude API, Zod at every boundary, Vitest with PGlite for migration tests. HubSpot is planned for M6.
+TypeScript (strict), Node 22 scripts, Deno for Supabase Edge Functions, Supabase Postgres with RLS, Clay, Claude API, Zod at every boundary, Vitest with PGlite for migration tests. HubSpot REST API (service key) for the CRM mirror.
 
 ## Run the tests
 

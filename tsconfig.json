@@ -16,6 +16,6 @@
     "noEmit": true,
     "allowImportingTsExtensions": true
   },
-  "include": ["src", "tests", "evals", "supabase/functions/_shared", "supabase/functions/*/handler.ts"],
+  "include": ["src", "tests", "evals", "scripts/**/*.ts", "supabase/functions/_shared", "supabase/functions/*/handler.ts"],
   "exclude": ["node_modules", "supabase/functions/*/index.ts"]
 }

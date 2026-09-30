@@ -87,6 +87,21 @@ describe('withRetry', () => {
     expect(delays).toEqual([999, 1998, 2997, 2997])
   })
 
+  it('uses a server-requested wait over backoff, capped at maxRetryAfterMs', async () => {
+    const delays: number[] = []
+    const fn = vi.fn().mockRejectedValue(new Error('x'))
+    await expect(
+      withRetry(fn, {
+        attempts: 3,
+        sleep: noSleep,
+        retryAfterMs: (_e) => 120_000,
+        maxRetryAfterMs: 30_000,
+        onRetry: (_e, _a, d) => delays.push(d),
+      }),
+    ).rejects.toThrow()
+    expect(delays).toEqual([30_000, 30_000])
+  })
+
   it('classifies retryable HTTP statuses', () => {
     expect([408, 429, 500, 503].every(isRetryableStatus)).toBe(true)
     expect([400, 401, 404, 422].some(isRetryableStatus)).toBe(false)
